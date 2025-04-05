@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:provider_application/controllers/counter_screen_controller.dart';
 import 'package:provider_application/providers/counter_provider.dart';
 
 class CounterScreen extends StatelessWidget {
   const CounterScreen({super.key});
 
+
   @override
   Widget build(BuildContext context) {
+    final counter =context.read<CounterProvider>();
+    final counterProvider = context.watch<CounterProvider>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Counter"),
@@ -16,7 +21,9 @@ class CounterScreen extends StatelessWidget {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [Center(child: Text(context.watch<CounterProvider>().numValue.toString()))],
+        children: [
+          Center(child: Text(counterProvider.numValue.toString()))
+        ],
       ),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
@@ -24,16 +31,20 @@ class CounterScreen extends StatelessWidget {
         children: [
           FloatingActionButton(
             onPressed: () {
-              context.read<CounterProvider>().increment();
+              counter.increment();
             },
             child: Icon(Icons.add),
           ),
           FloatingActionButton(
             onPressed: () {
-              context.read<CounterProvider>().decrement();
+              counter.decrement();
             },
             child: Icon(Icons.remove),
           ),
+          FloatingActionButton(onPressed: (){
+           counter.reset();
+          },
+          child: Icon(Icons.restart_alt),)
         ],
       ),
     );
